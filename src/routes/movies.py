@@ -18,7 +18,7 @@ async def get_movies(
     movies = result.scalars().all()
 
     total_items = await db.scalar(select(func.count(MovieModel.id)))
-    total_pages = total_items // per_page
+    total_pages = (total_items + per_page - 1) // per_page
 
     prev_page = f"/movies/?page={page - 1}&per_page={per_page}" if page > 1 else None
     next_page = f"/movies/?page={page + 1}&per_page={per_page}" if page < total_pages else None
